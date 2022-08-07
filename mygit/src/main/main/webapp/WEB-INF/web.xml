@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 일반적으로 XML 선언은 XML문서의 첫번째 줄에 나타납니다.
+	 XML 선언은 필수 항목이 아니지만 사용할 경우 문서에서 첫 번째 줄이어야 하며
+	 그 앞에 다른 내용이나 공백이 없어야 합니다.-->
+<web-app version="4.0"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee                      
+	 http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+  >
+  
+  <context-param>
+  <description>아이디</description>
+  <param-name>id</param-name>
+  <param-value>jsp</param-value>
+ </context-param> 
+ 
+ <context-param>
+  <description>비밀번호</description>
+  <param-name>password</param-name>
+  <param-value>jsp</param-value>
+ </context-param>
+  
+  
+  <!-- 
+  1. web.xml 파일의 서블릿 관련 부분은 웹 컨테이너에게 어떠한 URL 요청이 서블릿 요청이고
+  	 그 서블릿 요청이 사용하는 서블릿 클래스는 어떤 것인지 알려주는 파일입니다.
+  	 
+  2. 이 파일을 DD(Deployment Descriptor:배치 서술자)라고 하는데 각 어플리케이션의 환경을
+  	 설정하는 부분을 담당합니다.
+  	 
+  3. WEB-INF 디렉토리에 위치합니다.
+  
+  4. <servlet></servlet> 태그로 묶인 부분이 각각의 서블릿에 대응하는 서블릿 클래스를 
+     지정하는 부분입니다.
+     
+  5. <servlet-mapping></servlet-mapping>태그 부분은 URL 상의 요청명과 서블릿을
+     연결해주는 부분입니다.
+   
+  6. <servlet-name> 태그로 묶인 부분은 서블릿의 이름을 배정한 부분이고
+  	 <servlet-class>태그로 묶인 부분이 서블릿 이름에 대한 클래스를 명시해 놓은 부분입니다.
+  
+  7. <servlet-mapping>태그 안의 <servlet-name>은 반드시 <servlet>태그 안의
+     <servlet-name>과 일치해야합니다.
+     <url-pattern>태그로 묶인 부분이 <servlet-name>태그에 명시된 서블릿이
+     요청되기 위한 주소의 패턴을 입력하는 부분입니다.
+     
+   주소 지정 시 "http://서버주소:포트번호/웹 애플리케이션"까지 생략하고 그 다음부터 지정합니다.
+  
+   -->
+<!-- 	<servlet>
+		<servlet-name>S</servlet-name>
+		<servlet-class>_1.ServletTest3</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>S</servlet-name>
+		<url-pattern>/test</url-pattern>
+	</servlet-mapping>
+
+ 파라미터 이름이 logEnabled이고 파라미터 값이 "true"인 초기화 파라미터 추가 
+<context-param>
+		<description>로깅 여부</description>
+		<param-name>logEnabled</param-name>
+		<param-value>true</param-value>
+</context-param>
+
+ 파라미터 이름이 debugLevel이고 파라미터 값이 "5"인 초기화 파라미터 추가 
+<context-param>
+		<description>디버깅 레벨</description>
+		<param-name>debugLevel</param-name>
+		<param-value>5</param-value>
+</context-param>
+
+<context-param>
+		<description>디버깅 레벨</description>
+		<param-name>color</param-name>
+		<param-value>pink</param-value>
+</context-param>
+
+ 에러 페이지 지정 
+<error-page>
+<error-code>404</error-code>
+<location>/ex3_implicit_object/_6.exception/error/error404.jsp</location>
+</error-page>
+
+<error-page>
+<error-code>500</error-code>
+<location>/ex3_implicit_object/_6.exception/error/error500.jsp</location>
+</error-page>
+
+<error-page>
+<exception-type>java.lang.NullPointerException</exception-type>
+<location>/ex3_implicit_object/_6.exception/error/errorMullPoint.jsp</location>
+</error-page> -->
+</web-app>
