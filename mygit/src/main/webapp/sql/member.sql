@@ -22,5 +22,37 @@ delete from member;
 
 select id, password from member where id='admin';
 update member set name='사용자' where id='admin1'; 
-insert into member values ('admin3','123','사용자',21,'남','admin3@gmail.com',null)
-insert into member values ('admin','1234','관리자',21,'남','admin@gmail.com',null)
+insert into member values ('admin3','123','사용자',21,'남','admin3@gmail.com',null);
+insert into member values ('admin','1234','관리자',21,'남','admin@gmail.com',null);
+
+
+
+
+drop table memberall cascade constraints purge;
+
+
+create table memberall(
+	email		varchar2(30),
+	domain		varchar2(50),
+	pass 		varchar2(16),
+	user_name 	varchar2(20),
+	name		varchar2(15),
+	jumin1		char(6),
+	jumin2		char(7),
+	gender		varchar2(10),
+	phone		varchar2(30),
+	post		char(5),
+	address		varchar2(200),
+	primary key(email)
+);
+
+select * from memberall
+
+ALTER TABLE memberall ADD(memberfile varchar2(50));
+
+insert into memberall values ('admin','gmail.com','123','사용자','김땡땡','990909','3012367',
+						'남','010-123-456','12345','서울',null);
+insert into memberall values ('admin1','gmail.com','123','사용자','김땡땡','990909','3012367',
+						'남','010-123-456','12345','서울',null);
+						
+update memberall set pass='123' where email='admin1'

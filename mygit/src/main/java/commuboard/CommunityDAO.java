@@ -33,7 +33,7 @@ private DataSource ds;
 		int x = 0;
 		try {
 			conn = ds.getConnection();
-			pstmt = conn.prepareStatement("select count(*) from board");
+			pstmt = conn.prepareStatement("select count(*) from community");
 			rs = pstmt.executeQuery();
 
 			if (rs.next()) {
@@ -77,13 +77,14 @@ private DataSource ds;
 		
 		String board_list_sql = "select * "
 							+ "   from (select rownum rnum, j.* "
-							+ "    	    from (select board.*,  nvl(cnt, 0) cnt "
-							+ "               from board left outer join (select comment_board_num, count(*) cnt "
-							+ "                                           from comm "
-							+ "											  group by comment_board_num) "
-							+ "               on board_num = comment_board_num"
-							+ "      		  order by BOARD_RE_REF desc,"
-							+ "     	      BOARD_RE_SEQ asc) j " 
+							+ "    	    from (select b.* , m.user_name, nvl(cnt, 0) as cnt "
+							+ "              from community b left outer join (select comment_num, count(*) cnt "
+							+ "                                           from comments "
+							+ "											  group by comment_num) c "
+							+ "              on b.board_num = c.comment_num "
+							+ "              left join memberall m "
+							+ "              on b.board_name = m.email "
+							+ "     	      order by board_num desc ) j " 
 							+ "     	where rownum <= ? "
 							+ "			) "
 							+ " where rnum>=? and rnum<=?";
@@ -104,13 +105,9 @@ private DataSource ds;
 			while (rs.next()) {
 				Community board = new Community();
 				board.setBoard_num(rs.getInt("BOARD_NUM"));
-				board.setBoard_name(rs.getString("BOARD_NAME"));
+				board.setBoard_name(rs.getString("user_name"));
 				board.setBoard_subject(rs.getString("BOARD_SUBJECT"));
 				board.setBoard_content(rs.getString("BOARD_CONTENT"));
-				board.setBoard_file(rs.getString("BOARD_FILE"));
-				board.setBoard_re_ref(rs.getInt("BOARD_RE_REF"));
-				board.setBoard_re_lev(rs.getInt("BOARD_RE_LEV"));
-				board.setBoard_re_seq(rs.getInt("BOARD_RE_SEQ"));
 				board.setBoard_readcount(rs.getInt("BOARD_READCOUNT"));
 				board.setBoard_date(rs.getString("BOARD_DATE"));
 				board.setCnt(rs.getInt("cnt"));
@@ -154,14 +151,13 @@ private DataSource ds;
 		
 		String board_list_sql = "select * "
 							+ "   from (select rownum rnum, j.* "
-							+ "    	    from (select board.*,  nvl(cnt, 0) cnt "
-							+ "               from board left outer join (select comment_board_num, count(*) cnt "
-							+ "                                           from comm "
-							+ "											  group by comment_board_num) "
-							+ "               on board_num = comment_board_num"
+							+ "    	    from (select community.*,  nvl(cnt, 0) cnt "
+							+ "               from community left outer join (select comment_num, count(*) cnt "
+							+ "                                           from comments "
+							+ "											  group by comment_num) "
+							+ "               on board_num = comment_num"
 							+ "               where board_name = ? "
-							+ "      		  order by BOARD_RE_REF desc,"
-							+ "     	      BOARD_RE_SEQ asc) j " 
+							+ "     	     order by board_num desc  ) j " 
 							+ "     	where rownum <= ? "
 							+ "			) "
 							+ " where rnum>=? and rnum<=?";
@@ -186,10 +182,6 @@ private DataSource ds;
 				board.setBoard_name(rs.getString("BOARD_NAME"));
 				board.setBoard_subject(rs.getString("BOARD_SUBJECT"));
 				board.setBoard_content(rs.getString("BOARD_CONTENT"));
-				board.setBoard_file(rs.getString("BOARD_FILE"));
-				board.setBoard_re_ref(rs.getInt("BOARD_RE_REF"));
-				board.setBoard_re_lev(rs.getInt("BOARD_RE_LEV"));
-				board.setBoard_re_seq(rs.getInt("BOARD_RE_SEQ"));
 				board.setBoard_readcount(rs.getInt("BOARD_READCOUNT"));
 				board.setBoard_date(rs.getString("BOARD_DATE"));
 				board.setCnt(rs.getInt("cnt"));
@@ -197,7 +189,7 @@ private DataSource ds;
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			System.out.println("getBoardList() 에러 : " + ex);
+			System.out.println("getmyWriting() 에러 : " + ex);
 		} finally {
 			try {
 				if (rs != null)
@@ -228,7 +220,7 @@ private DataSource ds;
 		int x = 0;
 		try {
 			conn = ds.getConnection();
-			pstmt = conn.prepareStatement("select count(*) from board where board_name=?");
+			pstmt = conn.prepareStatement("select count(*) from community where board_name=?");
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
 
@@ -269,7 +261,7 @@ private DataSource ds;
 		int res=0;
 		try {
 			conn = ds.getConnection();
-			pstmt = conn.prepareStatement("DELETE from board where board_num=?");
+			pstmt = conn.prepareStatement("DELETE from community where board_num=?");
 			for(int i=0; i<num.length; i++) {
 			pstmt.setInt(1, num[i]);
 			
@@ -322,38 +314,28 @@ private DataSource ds;
 		try {
 			conn = ds.getConnection();
 			
-			String max_sql = "(select nvl(max(board_num),0)+1 from board)";
+			String max_sql = "(select nvl(max(board_num),0)+1 from community)";
 
 			// 원문글의 BOARD_RE_REF 필드는 자신의 글번호 입니다.
-			String sql = "insert into board " 
-			            + "(BOARD_NUM,     BOARD_NAME,  BOARD_PASS,    BOARD_SUBJECT,"
-					    + " BOARD_CONTENT, BOARD_FILE,  BOARD_RE_REF," 
-			            + " BOARD_RE_LEV,  BOARD_RE_SEQ,BOARD_READCOUNT)"
-					    + " values(" + max_sql + ",?,?,?," 
-			            + "        ?,?," +   max_sql  + "," 
-					    + "        ?,?,?)";
+			String sql = "insert into community " 
+			            + "(BOARD_NUM,     BOARD_NAME,  BOARD_SUBJECT,"
+					    + " BOARD_CONTENT, BOARD_READCOUNT) "
+					    + " values(" + max_sql + ",?,?," 
+			            + "        ?,?)";
 
 			// 새로운 글을 등록하는 부분입니다.
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setString(1, board.getBoard_name());
-			pstmt.setString(2, board.getBoard_pass());
-			pstmt.setString(3, board.getBoard_subject());
-			pstmt.setString(4, board.getBoard_content());
-			pstmt.setString(5, board.getBoard_file());
-
-			// 원문의 경우 BOARD_RE_LEV, BOARD_RE_SEQ 필드 값은 0 입니다.
-			pstmt.setInt(6, 0); // BOARD_RE_LEV 필드
-			pstmt.setInt(7, 0); // BOARD_RE_SEQ 필드
-			pstmt.setInt(8, 0); // BOARD_READCOUNT 필드
+			pstmt.setString(2, board.getBoard_subject());
+			pstmt.setString(3, board.getBoard_content());
+			pstmt.setInt(4, 0); // BOARD_READCOUNT 필드
 
 			result = pstmt.executeUpdate();
-
-		
-		if (result == 1 ) {
-		System.out.println("데이터 삽입이 모두 완료되었습니다.");
-		return true;
-		
+			
+			if (result == 1 ) {
+				System.out.println("데이터 삽입이 모두 완료되었습니다.");
+				return true;
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -378,7 +360,7 @@ private DataSource ds;
 	public void setReadCountUpdate(int num) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		String sql = " update board "
+		String sql = " update community "
 				   + " set BOARD_READCOUNT = BOARD_READCOUNT + 1 "
 				   + " where BOARD_NUM = ? ";
 		try{
@@ -413,19 +395,17 @@ private DataSource ds;
 		Community board = null;
 		try {
 			conn = ds.getConnection();
-			pstmt = conn.prepareStatement("select * from board where BOARD_NUM = ? ");
+			pstmt = conn.prepareStatement("select c.*, m.user_name from community c left join memberall m "
+					+ "					   on c.board_name = m.email "
+					+ "					   where board_num = ? ");
 			pstmt.setInt(1, num);
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
 				board = new Community();
 				board.setBoard_num(rs.getInt("BOARD_NUM"));
-				board.setBoard_name(rs.getString("BOARD_NAME"));
+				board.setBoard_name(rs.getString("user_name"));
 				board.setBoard_subject(rs.getString("BOARD_SUBJECT"));
 				board.setBoard_content(rs.getString("BOARD_CONTENT"));
-				board.setBoard_file(rs.getString("BOARD_FILE"));
-				board.setBoard_re_ref(rs.getInt("BOARD_RE_REF"));
-				board.setBoard_re_lev(rs.getInt("BOARD_RE_LEV"));
-				board.setBoard_re_seq(rs.getInt("BOARD_RE_SEQ"));
 				board.setBoard_readcount(rs.getInt("BOARD_READCOUNT"));
 				board.setBoard_date(rs.getString("BOARD_DATE"));
 			}
@@ -461,10 +441,10 @@ private DataSource ds;
 		ResultSet rs = null;
 		int x = 0;
 		try {
-			String sql = "select count(*) from board "
+			String sql = "select count(*) from community "
 					   + "	where board_name = ? "
-					   + "  and board_subject like ? "
-					   + "  or board_content like ? ";
+					   + "  and ( board_subject like ? "
+					   + "  or board_content like ? )";
 			System.out.println(sql);
 			conn = ds.getConnection();
 			pstmt = conn.prepareStatement(sql);
@@ -510,22 +490,20 @@ private DataSource ds;
 		//limit : 페이지 당 목록의 수
 		//board_re_ref desc, board_re_seq asc에 의해 정렬한 것을
 		//조건절에 맞는 rnum의 범위 만큼 가져오는 쿼리문입니다.
-		
 		String board_list_sql = "select * "
-							+ "   from (select rownum rnum, j.* "
-							+ "    	    from (select board.*,  nvl(cnt, 0) cnt "
-							+ "               from board left outer join (select comment_board_num, count(*) cnt "
-							+ "                                           from comm "
-							+ "											  group by comment_board_num) "
-							+ "               on board_num = comment_board_num"
-							+ "               where board_name = ? "
-						    + "  			  and board_subject like ? "
-							+ " 			  or board_content like ? "
-							+ "      		  order by BOARD_RE_REF desc,"
-							+ "     	      BOARD_RE_SEQ asc) j " 
-							+ "     	where rownum <= ? "
-							+ "			) "
-							+ " where rnum>=? and rnum<=?";
+				+ "   from (select rownum rnum, j.* "
+				+ "    	    from (select community.*,  nvl(cnt, 0) cnt "
+				+ "               from community left outer join (select comment_num, count(*) cnt "
+				+ "                                           from comments "
+				+ "											  group by comment_num) "
+				+ "               on board_num = comment_num "
+				+"				  where board_name = ? " 
+				+"				  and (board_subject like ? "
+				+"				  or board_content like ? "
+				+ "     	      ) order by board_num desc ) j " 
+				+ "     	where rownum <= ? "
+				+ "			) "
+				+ " where rnum>=? and rnum<=?";
 		
 		List<Community> list = new ArrayList<Community>();
 		// 한 페이지당 10개씩 목록인 경우 1페이지, 2페이지, 3페이지, 4페이지...
@@ -549,10 +527,6 @@ private DataSource ds;
 				board.setBoard_name(rs.getString("BOARD_NAME"));
 				board.setBoard_subject(rs.getString("BOARD_SUBJECT"));
 				board.setBoard_content(rs.getString("BOARD_CONTENT"));
-				board.setBoard_file(rs.getString("BOARD_FILE"));
-				board.setBoard_re_ref(rs.getInt("BOARD_RE_REF"));
-				board.setBoard_re_lev(rs.getInt("BOARD_RE_LEV"));
-				board.setBoard_re_seq(rs.getInt("BOARD_RE_SEQ"));
 				board.setBoard_readcount(rs.getInt("BOARD_READCOUNT"));
 				board.setBoard_date(rs.getString("BOARD_DATE"));
 				board.setCnt(rs.getInt("cnt"));
@@ -582,6 +556,77 @@ private DataSource ds;
 			}
 		}
 		return list;
+	}
+
+	public boolean boardModify(Community c) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = "update community "
+				   + "set BOARD_SUBJECT=?, BOARD_CONTENT=? "
+				   + "where BOARD_NUM=? ";
+		try {
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, c.getBoard_subject());
+			pstmt.setString(2, c.getBoard_content());
+			pstmt.setInt(3, c.getBoard_num());
+			int result = pstmt.executeUpdate();
+			if (result == 1) {
+				System.out.println("성공 업데이트");
+				return true;
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			System.out.println("getDetail() 에러 : " + ex);
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+		}
+		return false;
+	}
+
+	public boolean boardDelete(int num) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = "delete from community "
+				   + "where BOARD_NUM=? ";
+		try {
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			int result = pstmt.executeUpdate();
+			if (result == 1) {
+				System.out.println("삭제 완료");
+				return true;
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			System.out.println("getDetail() 에러 : " + ex);
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+		}
+		return false;
 	}
 	
 

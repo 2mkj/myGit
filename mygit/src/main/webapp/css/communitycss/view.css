@@ -1,0 +1,41 @@
+@font-face {font-family:'a시월구일2';src: url('../../font/a시월구일2.ttf') format('truetype');}
+select.form-control{width:auto;margin-bottom: 2em;display:inline-block}
+*:focus,*:active{outline:none!important;}
+ .pagination {
+ --bs-pagination-active-border-color: none !important;
+ --bs-pagination-disabled-color: none important;
+ }
+body{background:#e3e3e3 !important;}
+.community1{background:white;border-radius:20px; padding: 80px 160px; margin: 40px auto;}
+.rows{text-align: right;}
+.commut{text-align:center; font-size:16px;border-color:silver;}
+#comm > div > table > thead > tr:nth-child(2) > th:nth-child(1){width:8%}
+#comm > div > table > thead > tr:nth-child(2) > th:nth-child(2){width:60%}
+#comm > div > table > thead > tr:nth-child(2) > th:nth-child(3){width:12%}
+#comm > div > table > thead > tr:nth-child(2) > th:nth-child(4){width:8%}
+#comm > div > table > thead > tr:nth-child(2) > th:nth-child(5){width:6%}
+#comm > div > table > tbody > tr > td:nth-child(2){text-align:left; text-decoration:none; padding-left:20px;}
+#comm > div > table > thead > tr:nth-child(2) > th:nth-child(2) > div{text-align:left;padding-left:20px;}
+#comm > div > table > thead > tr:nth-child(1) > th{text-align:left; border-bottom:3px solid silver; padding:10px 40px 10px 32px;
+font-size:20px; font-family:'a시월구일2'; color:#212529;}
+#comm > div > table > tbody > tr > td > div > a {text-decoration:none; color:#212529;}
+#comm > div > table > tbody > tr > td > div > span{color:#f30;}
+/* 페이징 */
+.center-block{margin: 58px 5px 3px 330px;}
+.commup {margin:0}
+.commup, page-item{list-style-type:none;}
+.commup > li{ list-style-type:none; float:left;}
+.page-link{border:none;}
+.page-link>a:focus{outline:none;}
+.hovernone{color:#363636;}
+.pageActive{color:white!important; background: #f80;border-radius:50%; font-weight:bold;}
+li.page-item > a:hover{color:#f80!important;}
+li.page-item > a:active{color:white!important; background: #f80;border-radius:50%; font-weight:bold;outline:none;}
+li.page-item , li.page-item1 > a{text-decoration:none;color:#363636;padding:0 3px;}
+li.page-item > a{display:inline-block;padding:0 8px; border-radius:50%;text-decoration:none;color:#363636;}
+.my_search{margin: 45px 19px -2px 360px;}
+#mySearchinput{border:1px solid silver}
+#mySearchinput:focus{ outline:none;}
+.mySearch1{border:1px solid silver; color:#363636}
+#modifybtn{margin-right:6px}
+#modifybtn,#deletebtn1{cursor:pointer;}

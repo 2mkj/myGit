@@ -3,11 +3,10 @@
 <html>
 <head>
 <title>MVC 게시판</title>
+<script src="${pageContext.request.contextPath}/js/bootstrap.bundle.min.js"></script>
 <jsp:include page="../mainpage/top.jsp" />
-<script src="js/modifyform.js"></script>
 <style>
   h1{font-size:1.5rem; text-align: center; color: #1a92b9}
-  .container {width:60%}
   #upfile{display:none}
   input:focus, textarea:focus{outline: 1px solid red;}
 </style>
@@ -15,18 +14,17 @@
 <body>
 <%--게시판 수정 --%>
 <div class="container">
- <form action="CommunityModifyAction.net" method="post" name="modifyform" enctype="multipart/form-data" >
-  <input type="hidden" name="board_num" value="${boarddata.board_num}">
+ <form action="CommunityModify.co" method="post" name="modifyform">
+  <input type="hidden" name="num" value="${c.board_num}">
   <h1>MVC 게시판 - 수정</h1>
   <div class="form-group">
    <label for="board_name">글쓴이</label>
-   <input type="text" class="form-control"
-		  value="${boarddata.board_name}" readOnly>
+   <input type="text" class="form-control" name="name"  value="${c.board_name}" readOnly>
   </div>
   <div class="form-group">
 	<label for="board_subject">제목</label>
-	<textarea name="board_subject" id="board_subject"  rows="1" maxlength="100"
-		   class="form-control">${boarddata.board_subject}</textarea>
+	<textarea name="subject" id="board_subject"  rows="1" maxlength="100"
+		   class="form-control">${c.board_subject}</textarea>
   </div>
   <!-- Cross-Site Scripting 
   악의적으로 사용자가 공격하려는 사이트에 스크립트를 넣는 기업이며
@@ -51,30 +49,10 @@
   -->
   <div class="form-group">
 	<label for="board_content">내용</label>
-	<textarea name="board_content" id="board_content"
-			  rows="15" class="form-control">${boarddata.board_content}</textarea>
+	<textarea name="content" id="board_content"
+			  rows="15" class="form-control">${c.board_content}</textarea>
   </div>
    
-  <%--원문글인 경우에만 파일 첨부 수정 가능합니다. --%>
-  <c:if test="${boarddata.board_re_lev == 0 }">
-  <div class="form-group">
- 	<label for="board_file">파일 첨부</label>
-	<label for="upfile">
-	<img src="image/attach.png" alt="파일첨부" width="20px">
-	</label>
-	<input type="file" id="upfile" name="board_file">
-	<span id="filevalue">${boarddata.board_file}</span>
-	<img src="image/remove.png" alt="파일삭제" width="10px" class="remove">
-  </div>
-  </c:if>
-  
-    <div class="form-group">
-    <label for="board_pass">비밀번호</label>
-    <input name="board_pass"    
-           id="board_pass" size="10" type="password" maxlength="30"
-		   class="form-control" placeholder="Enter board_pass">
-  </div>
-  
   <div class="form-group">
   	<button type="submit" class="btn btn-primary">수정</button>
   	<button type="reset" class="btn btn-danger" onClick="history.go(-1)">취소</button>

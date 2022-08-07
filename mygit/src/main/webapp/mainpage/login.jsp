@@ -12,9 +12,9 @@ body > div.container1 > form > div > label {margin: 10px 0}
 </style>
 <script>
 $(function() {
-	var id = '${id}';
-	if (id) {
-		$("#id").val(id);
+	var email = '${email}';
+	if (email) {
+		$("#email").val(email);
 		$("#remember").prop('checked',true);
 	}
 })
@@ -25,7 +25,7 @@ $(function() {
  <p class="h4 mb-4 text-center">login</p>
  	<div class="form-group">
 		<b>아이디</b> 
-		<input type="text" name="id" placeholder="Enter id" id="id"	required>
+		<input type="text" name="email" placeholder="Enter email" id="email" required>
 	</div>
 	<div>
 		<b>Password</b> 

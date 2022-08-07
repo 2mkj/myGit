@@ -1,54 +1,26 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
 <html>
 <head>
-<jsp:include page="../mainpage/top.jsp" />
-<script src="js/writeform.js"></script>
-<style>
-  h1{font-size:1.5rem; text-align: center; color: #1a92b9}
-  .container {width:60%}
-  label{font-weight:bold}
-  #upfile{display:none}
-  img{width:20px;}
-</style>
+<meta charset="UTF-8">
+<title>커뮤니티 게시판 글쓰기</title>
+<jsp:include page="../mainpage/top.jsp"/>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="${pageContext.request.contextPath}/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-<div class="container">
- <form action="CommunityAddAction.net" method="post" enctype="multipart/form-data" name="boardform">
-  <h1>MVC 게시판-write 페이지</h1>
-  <div class="form-group">
-   <label for="board_name">글쓴이</label>
-   <input name="board_name" id="board_name" value="${id}" readOnly
-		  type="text"       class="form-control"
-		  placeholder="Enter board_name">
-  </div>
-  <div class="form-group">
-    <label for="board_pass">비밀번호</label>
-    <input name="board_pass" id="board_pass" type="password" maxlength="30"
-		   class="form-control" placeholder="Enter board_pass">
-  </div>
-  <div class="form-group">
-	<label for="board_subject">제목</label>
-	<input name="board_subject" id="board_subject" type="text" maxlength="100"
-		   class="form-control" placeholder="Enter board_subject">
-  </div>
-  <div class="form-group">
-	<label for="board_content">내용</label>
-	<textarea name="board_content" id="board_content"
-			  rows="10" class="form-control"></textarea>
-  </div>
-  <div class="form-group">
- 	<label for="board_file">파일 첨부</label>
-	<label for="upfile">
-	<img src="image/attach.png" alt="파일첨부">
-	</label>
-	<input type="file" id="upfile" name="board_file">
-	<span id="filevalue"></span>
-  </div>
-  <div class="form-group">
-  	<button type="submit" class="btn btn-primary">등록</button>
-  	<button type="reset" class="btn btn-danger">취소</button>
-  </div>
-  </form>
- </div>
+<form id="wrtFrm" action="CommunityAddAction.co" method="post" >
+<h1>커뮤니티 게시판</h1>
+<input type="hidden" name="name" value="${email}">
+<p>제목</p>
+<input type="text" name="subject">
+<p>내용</p>
+<div>
+<textarea name="content" style="height:200px">
+</textarea>
+</div>
+<button type="submit" class="addcommu">올리기</button>
+</form>
 </body>
 </html>

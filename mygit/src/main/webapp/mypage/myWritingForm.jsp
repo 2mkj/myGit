@@ -3,7 +3,7 @@
 <html>
 <head>
 <title>프로필 수정</title>
-<link href="css/my.css" rel="stylesheet" type="text/css">
+<link href="css/mymaincss/my.css" rel="stylesheet" type="text/css">
 <script src="js/jquery-3.6.0.js"></script>
 </head>
 <body class="updatebody">
@@ -19,7 +19,7 @@
      <tr>
 	 <td><%--제목 --%>
 	  <div>
-	  	 <a href="CommunityDetail.net?num=${b.board_num}">
+	  	 <a href="CommunityDetail.co?num=${b.board_num}">
 	  	   <c:if test="${b.board_subject.length()>=20}">
 	  	     <c:out value="${b.board_subject.substring(0,20)}..." />
 	  	   </c:if>
@@ -29,11 +29,11 @@
 	  	 </a>[${b.cnt}]
 	  </div>
 	  </td>
-	  <td><div>${b.board_date}</div></td>
+	  <td><div><input type="hidden" name="num" value="${b.board_num}">${b.board_date}</div></td>
 	  <td><div>
-	  <img id="modifybtn" onclick="location.href='CommunityModifyView.net'" src="image/modify.png" style="width:17px;height:17px">
-	  <img id="deletebtn1" onclick="location.href='CommunityDelete.net'" src="image/trash.png" style="width:16px;height:17px"></div></td>
-	  </tr>
+	  <a href="CommunityModifyView.co?num=${b.board_num}"><img id="modifybtn" src="image/mymainimg/modify.png" style="width:17px;height:17px"></a>
+	  <a  class="deletechk" href="myWritingDelete.net?num=${b.board_num}"><img id="deletebtn1" src="image/mymainimg/trash.png" style="width:16px;height:17px"></a></div></td>
+	  </tr> 
 	  </c:forEach>
 	  </tbody>
 	 </table>
@@ -76,14 +76,12 @@
 	  </c:if>
 	  
  	  <c:if test="${page < maxpage }">
-		
 		<c:url var="go" value="myWriting.net">
 	       <c:param name="search_word"  value="${search_word}" />
 	       <c:param name="page"		    value="${page+1}" />
 	     </c:url>
-		
 		<li class="page-item">
-		 <a  href="${next}" >&gt;</a>
+<a  href="myWriting.net?page=${page+1}&search_word=${search_word}">&gt;</a>
 		</li>
 	  </c:if>
 	</ul>	 
@@ -96,7 +94,7 @@
 </c:if> <%--<c:if test="${listcount > 0}"> end --%>
 <%--게시글이 없는 경우--%>
 <c:if test="${listcount == 0 && empty search_word}">
-  <h3 style="text-align:center; margin:100px 0;">등록된 글이 없습니다.</h3>
+  <h3 style="color:gray; text-align:center; margin:100px 0;">등록된 글이 없습니다.</h3>
 </c:if>
 
 <c:if test="${listcount == 0 && !empty search_word}">
@@ -112,7 +110,12 @@ $(function(){
      $(this).parent().addClass("pageActive"); 
     })
 });
-
+$(".deletechk").click(function () {
+    var answer = confirm('정말 삭제하시겠습니까?');
+    if (!answer) {// 취소를 클릭한 경우
+		event.preventDefault(); //이동하지 않습니다.	    	
+    }
+});
 </script>
 </body>
 </html>

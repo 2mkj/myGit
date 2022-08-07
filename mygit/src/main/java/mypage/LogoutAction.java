@@ -1,28 +1,23 @@
-package community;
+package mypage;
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import member.MemberDAO2;
-import member.Memberall;
-
-public class CommunityWriteAction implements Action {
+public class LogoutAction implements Action {
 
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		String email = (String) session.getAttribute("email");
-		MemberDAO2 mdao = new MemberDAO2();
-		Memberall m = mdao.member_info(email);
-		request.setAttribute("memberinfo", m);
+		// 세션 해제
+		session.invalidate();
 		ActionForward forward = new ActionForward();
-		forward.setRedirect(false);
-		forward.setPath("community/boardWrite.jsp");
+		forward.setRedirect(true);
+		forward.setPath("main.net");
+
 		return forward;
 	}
 

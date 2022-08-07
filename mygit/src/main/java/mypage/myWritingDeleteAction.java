@@ -1,4 +1,4 @@
-package community;
+package mypage;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import commuboard.CommunityDAO;
 
-public class CommunityDeleteAction implements Action {
+public class myWritingDeleteAction implements Action {
 
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
@@ -39,7 +39,7 @@ public class CommunityDeleteAction implements Action {
 		PrintWriter out=response.getWriter();
 		out.println("<script>");
 		out.println("alert('삭제 되었습니다.');");
-		out.println("location.href='Community.co';");
+		out.println("location.href=document.referrer;"); // 뒤로 가서 새로고침
 		out.println("</script>");
 		out.close();
 		return null;
