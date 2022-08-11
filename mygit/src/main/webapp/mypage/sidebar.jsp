@@ -6,9 +6,10 @@
 <script src="${pageContext.request.contextPath}/js/jquery-3.6.0.js"></script>
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 <style>
+body{background:#e3e3e3 !important;}
 /* 프로필 사진 */
 #MyPic{display: block; margin:0 auto 8px auto; width:180px; height:180px; border-radius: 50%; border: 1px solid lightgray}
-#MyNic{font-size:25px; font-family: '109_2', Poppins, sans-serif; text-align:center}
+#MyNic{font-size:25px; font-family: 'a시월구일2', Poppins, sans-serif; text-align:center}
 
 /* 사이드 바 */
 .side{text-align:center}
@@ -34,7 +35,7 @@ body > div.container > div > div > div.col-md-7 > div > div > ul {width: 153px;}
   display: inline-block;
   width: 170px;
   color: #404040;
-  font-family: '109_2', sans-serif;
+  font-family: 'a시월구일2', sans-serif;
   font-size: 18px;
   font-weight: 300;
   line-height: 1.5;
@@ -51,13 +52,13 @@ body > div.container > div > div > div.col-md-7 > div > div > ul {width: 153px;}
       <div class="myinfo">
       
        <c:if test='${empty memberinfo.memberfile}'>
-	     <c:set var='src' value='image/profile.png'/>
+	     <c:set var='src' value='image/mymainimg/profile.png'/>
 	   </c:if>
 	   <c:if test= '${!empty memberinfo.memberfile}'>
 	     <c:set var='src' value='${"memberupload/"}${memberinfo.memberfile}'/>
 	   </c:if>
 		<img id="MyPic" src="${src}">
-      	    <span id="MyNic">${memberinfo.name}</span>
+      	    <span id="MyNic">${memberinfo.user_name}</span>
       	    <span id="Myinfo">님의</span><br>
       	    <span id="Myinfo">
       	    <i class="fa fa-angle-double-right" style="pointer-events : none;"></i>

@@ -3,7 +3,7 @@
 <html>
 <head>
 <title>프로필 수정</title>
-<link href="css/my.css" rel="stylesheet" type="text/css">
+<link href="css/mymaincss/my.css" rel="stylesheet" type="text/css">
 <script src="js/jquery-3.6.0.js"></script>
 </head>
 <body class="updatebody">
@@ -31,13 +31,22 @@
 	  </div>
 	  </td>
 	  <td><div>${b.board_date}</div></td>
-	  <td><div> <img id="modifybtn" onclick="location.href='boardModify.bo'" src="image/modify.png" style="width:17px;height:17px">
-	  <img id="deletebtn1" onclick="location.href='boardDelete.bo'" src="image/trash.png" style="width:16px;height:17px"></div></td>
+	  <td><div> <img id="modifybtn" onclick="location.href='boardModify.bo'" src="image/mymainimg/modify.png" style="width:17px;height:17px">
+	  <img id="deletebtn1" onclick="location.href='boardDelete.bo'" src="image/mymainimg/trash.png" style="width:16px;height:17px"></div></td>
 	  </tr>
 	  </c:forEach>
 	  </tbody>
 	 </table>
-	 
+</c:if> <%--<c:if test="${listcount > 0}"> end --%>
+        
+<%--게시글이 없는 경우 --%>
+<c:if test="${listcount == 0 && empty search_word}">
+  <h3 style="color:gray; text-align:center; margin:100px 0;">등록된 리뷰가 없습니다.</h3>
+</c:if>
+
+<c:if test="${listcount == 0 && !empty search_word}">
+  <h3 style="color:gray; text-align:center; margin:100px 0;">검색 결과가 없습니다</h3>
+  </c:if>	 
 <div class="center-block">
 	<ul class="pagination justify-content-center">
 	  <c:if test="${page <= 1 }">
@@ -82,14 +91,7 @@
           <button type='button' class='mySearch1'>검색</button>
       </div>	 
 </div>
-</c:if> <%--<c:if test="${listcount > 0}"> end --%>
-
-        
-<%--게시글이 없는 경우 --%>
-<c:if test="${listcount == 0}">
-  <font size=5>등록된 글이 없습니다.</font>
-</c:if>
-    </form> 
+  </form>
 <script>
 //페이징 active 처리
 $(function(){

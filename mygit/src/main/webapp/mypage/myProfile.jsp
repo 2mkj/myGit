@@ -35,7 +35,7 @@ footer {
 <div class="wrap">
     <div class="row featurette">
   <!-- 회원 로그인 -->
-<c:if test="${id!='admin' && !empty id}">    
+<c:if test="${email!='admin' && !empty email}">    
       <div class="col-md-7">
         <jsp:include page="sidebar.jsp"/>
       </div>
@@ -45,7 +45,7 @@ footer {
       </div>
 </c:if>
  <!-- 관리자 로그인 -->
-<c:if test="${id=='admin'}">
+<c:if test="${email=='admin'}">
 	  <div class="col-md-5" style="margin : 0 auto !important;">
          <jsp:include page="myProfileForm.jsp"/>
       </div>

@@ -2,84 +2,83 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-<title>MVC 게시판</title>
-<jsp:include page="../mainpage/top.jsp" />
-<script src="js/modifyform.js"></script>
-<style>
-  h1{font-size:1.5rem; text-align: center; color: #1a92b9}
-  .container {width:60%}
-  #upfile{display:none}
-  input:focus, textarea:focus{outline: 1px solid red;}
-</style>
+<title>커뮤니티 게시판 글수정</title>
+<jsp:include page="../mainpage/top.jsp"/>
+<link rel="stylesheet" href="css/communitycss/view.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="js/jquery-3.6.0.js"></script>
+<script src="${pageContext.request.contextPath}/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 <%--게시판 수정 --%>
-<div class="container">
- <form action="CommunityModifyAction.net" method="post" name="modifyform" enctype="multipart/form-data" >
-  <input type="hidden" name="board_num" value="${boarddata.board_num}">
-  <h1>MVC 게시판 - 수정</h1>
-  <div class="form-group">
-   <label for="board_name">글쓴이</label>
-   <input type="text" class="form-control"
-		  value="${boarddata.board_name}" readOnly>
-  </div>
-  <div class="form-group">
-	<label for="board_subject">제목</label>
-	<textarea name="board_subject" id="board_subject"  rows="1" maxlength="100"
-		   class="form-control">${boarddata.board_subject}</textarea>
-  </div>
-  <!-- Cross-Site Scripting 
-  악의적으로 사용자가 공격하려는 사이트에 스크립트를 넣는 기업이며
-  공격에 성공하면 사이트에 접속한 사용자는 삽입된 코드를 실행하게 되면서 의도치 않은 행동을 수행시킵니다.
-  
-  *해결방법
-  1. textarea태그에 출력하는 경우 text로 처리해 스크립트가 실행되지 않습니다.
-  2. 코어 라이브러리 이용하는 경우
-  	 <c:out value="${b.BOARD_SUBJECT}" escapeXml="true"/>
-  	 escapeXml="true" 옵션을 이용해서 HTML 태그를 화면에 그대로 보여주게 합니다.
-  3. 자바스크립트의 replace를 이용하는 방법
-  4. 입력된 데이터의 "<", ">"를 특수문자로 변경합니다.
-     //크로스 사이트 스크립팅 방지하기 위한 메서드
-     private String replaceParameter(String param){
-     	String result = param;
-     	if(param !=null){
-     		result = result.replaceAll("<","&lt;");
-     		result = result.replaceAll(">","&gt;");
-  		}
-  		return result;
-  	}
-  -->
-  <div class="form-group">
-	<label for="board_content">내용</label>
-	<textarea name="board_content" id="board_content"
-			  rows="15" class="form-control">${boarddata.board_content}</textarea>
-  </div>
-   
-  <%--원문글인 경우에만 파일 첨부 수정 가능합니다. --%>
-  <c:if test="${boarddata.board_re_lev == 0 }">
-  <div class="form-group">
- 	<label for="board_file">파일 첨부</label>
-	<label for="upfile">
-	<img src="image/attach.png" alt="파일첨부" width="20px">
-	</label>
-	<input type="file" id="upfile" name="board_file">
-	<span id="filevalue">${boarddata.board_file}</span>
-	<img src="image/remove.png" alt="파일삭제" width="10px" class="remove">
-  </div>
-  </c:if>
-  
-    <div class="form-group">
-    <label for="board_pass">비밀번호</label>
-    <input name="board_pass"    
-           id="board_pass" size="10" type="password" maxlength="30"
-		   class="form-control" placeholder="Enter board_pass">
-  </div>
-  
-  <div class="form-group">
-  	<button type="submit" class="btn btn-primary">수정</button>
-  	<button type="reset" class="btn btn-danger" onClick="history.go(-1)">취소</button>
-  </div>
-  </form>
- </div><%--class="container" end --%>
+<form action="CommunityModify.co" method="post" name="modifyform" id="comm">
+  <input type="hidden" name="num" value="${c.board_num}">
+<div class="container community1 community2">
+<table class="table commut">
+<!-- 테이블 간격 -->
+<colgroup>
+<col width="15%" />
+<col width="85%" />
+</colgroup>
+<!-- 작성 페이지 -->
+ <thead>
+   <tr>
+     <th colspan="4">
+     <img src="${pageContext.request.contextPath}/image/mymainimg/writing.png" width=32 height=32 id="commu_icon">
+     커뮤니티 게시판</th>
+     <th><input type="hidden" name="name" value="${email}"></th>
+    </tr> 
+    </thead>
+    <tbody class="write">
+    <tr>
+    	<td>글쓴이</td>
+    	<td colspan="4"><input class="inputname" type="text" name="user_name" value="${c.board_name}" readOnly></td>
+    </tr>
+    <tr>
+    	<td>제목</td>
+    	<td colspan="4"><input class="inputsub" type="text" name="subject" value="${c.board_subject}" required></td>
+    </tr>
+    <tr>
+    	<td>내용</td>
+    	<td colspan="4"><textarea class="inputcon" name="content">${c.board_content}</textarea></td>
+    </tr>
+ 	<tr>
+ 	<td colspan="5">
+ 		<button type="submit" class="Modifycommu button-5">수정</button>
+ 		<button type="button" class="cancommu button-5">취소</button></td>
+ 	</tr>
+ 	</tbody>
+    </table>
+    </div>
+</form>
+<!-- 하단 -->
+<jsp:include page="../mainpage/upup.jsp"/>
+<footer>
+	<jsp:include page="../mainpage/bottom.jsp"/>
+</footer>
+<script>
+$(document).ready(function() {
+	
+	//submit 버튼 클릭할 때 이벤트 부분
+  $('form').submit(function() {
+	
+	if ($.trim($(".inputsub").val()) == "") {
+		alert("제목을 입력하세요");
+		$(".inputsub").focus();
+		return false;
+	}
+	if($.trim($(".inputcon").val()) == "") {
+		alert("내용을 입력하세요");
+		$(".inputcon"). focus();
+		return false;
+	}
+  });//submit end
+});
+$(".cancommu").click(function(){
+	var answer = confirm("글 수정을 취소하시겠습니까?")
+	if(answer == true)
+		history.go(-1);
+})
+</script>
 </body>
 </html>

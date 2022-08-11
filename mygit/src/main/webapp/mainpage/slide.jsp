@@ -26,9 +26,9 @@ body > div > div.swiper-pagination.swiper-pagination-clickable.swiper-pagination
 .swiper-slide{margin:0 auto;}
 
 /* 이미지 출력 */
-.ss1{background-image:url('${pageContext.request.contextPath}/image/bisang_slide.png');background-repeat: no-repeat;background-position: center;}
-.ss2{background-image:url('${pageContext.request.contextPath}/image/top.png');background-repeat: no-repeat;background-position: center;}
-.ss3{background-image:url('${pageContext.request.contextPath}/image/de.png');background-repeat: no-repeat;background-position: center;}
+.ss1{background-image:url('${pageContext.request.contextPath}/image/mymainimg/bisang_slide.png');background-repeat: no-repeat;background-position: center;}
+.ss2{background-image:url('${pageContext.request.contextPath}/image/mymainimg/top.png');background-repeat: no-repeat;background-position: center;}
+.ss3{background-image:url('${pageContext.request.contextPath}/image/mymainimg/de.png');background-repeat: no-repeat;background-position: center;}
 
 /* 영화 제목 */
 .ss1_title, .ss2_title, .ss3_title{

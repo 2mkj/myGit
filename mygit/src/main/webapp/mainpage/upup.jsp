@@ -6,7 +6,7 @@
 </style>
 <script src="js/jquery-3.6.0.js"></script>
 <!-- 맨위로 버튼 -->
-<div id="topButton"><img src="${pageContext.request.contextPath}/image/upup.png" id="topButtonImg"></div>
+<div id="topButton"><img src="${pageContext.request.contextPath}/image/mymainimg/upup.png" id="topButtonImg"></div>
 
 <script>
 $(document).ready(function() {
